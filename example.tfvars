@@ -1,0 +1,6 @@
+region      = "us-east-1"
+profile     = "your-admin-user"
+domain_name = "example.com"
+bucket      = "www.example.com"
+logs        = "your-logs-bucket"
+index_html  = "index.html"
