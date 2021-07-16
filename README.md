@@ -42,6 +42,7 @@ This terraform script creates an AWS CloudFront website by building out the foll
 ## CloudFront Function
 * The included `redirect.js` file will be used to redirect the following:
 * * `www.example.com/something` *redirects to* `www.example.com/something/index.html`
+* * See also: [URL rewrite to append index.html to the URI for single page applications](https://github.com/aws-samples/amazon-cloudfront-functions/tree/main/url-rewrite-single-page-apps)
 ___
 
 ## Example Config
