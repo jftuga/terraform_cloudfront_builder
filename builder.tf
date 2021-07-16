@@ -1,5 +1,3 @@
-// tf apply -var-file="codershowcase.tfvars"
-
 terraform {
   required_providers {
     aws = {
