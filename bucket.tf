@@ -30,7 +30,6 @@ resource "aws_s3_bucket" "b" {
           "Sid" : "1",
           "Effect" : "Allow",
           "Principal" : {
-            //"AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${resource.aws_cloudfront_origin_access_identity.new_oai.id}"
             "AWS" : "${resource.aws_cloudfront_origin_access_identity.new_oai.iam_arn}"
           },
           "Action" : "s3:GetObject",
