@@ -9,49 +9,9 @@ terraform {
   required_version = ">= 1.0.0"
 }
 
-variable "domain_name" {
-  description = "domain name without leading dot or without www"
-  type        = string
-  default     = "example.com"
-}
-
-variable "profile" {
-  description = "AWS user with CloudFront and S3 permissions"
-  type        = string
-  default     = "default"
-}
-
-variable "region" {
-  description = "AWS Region for ACM"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "bucket" {
-  description = "Preexisting S3 bucket with static web hosting (bucket) enabled"
-  type        = string
-  default     = ""
-}
-
-variable "logs" {
-  description = "Preexisting S3 bucket for logs"
-  type        = string
-  default     = ""
-}
-
-variable "index_html" {
-  description = "The inital HTML file to upload to the S3 bucket"
-  type        = string
-  default     = ""
-}
-
 provider "aws" {
   profile = var.profile
   region  = var.region
-}
-
-data "aws_s3_bucket" "logs" {
-  bucket = var.logs
 }
 
 resource "aws_acm_certificate" "cert" {
@@ -61,21 +21,6 @@ resource "aws_acm_certificate" "cert" {
   lifecycle {
     create_before_destroy = true
   }
-}
-
-locals {
-  s3_origin_id   = format("terraform-origin--%s", replace(var.domain_name, ".", "_"))
-  s3_logs_prefix = format("cf-%s", replace(var.domain_name, ".", "_"))
-}
-
-output "s3_origin_id" {
-  description = "generated from domain name"
-  value       = local.s3_origin_id
-}
-
-data "aws_route53_zone" "selected" {
-  name         = format("%s.", var.domain_name)
-  private_zone = false
 }
 
 resource "aws_route53_record" "cert" {
@@ -97,15 +42,6 @@ resource "aws_route53_record" "cert" {
 
 resource "aws_cloudfront_origin_access_identity" "new_oai" {
   comment = format("terraform-access-ident--%s", var.domain_name)
-}
-
-output "new_oai" {
-  description = "newly created OAI"
-  value       = resource.aws_cloudfront_origin_access_identity.new_oai.id
-}
-
-data "aws_cloudfront_cache_policy" "cache_pol" {
-  name = "Managed-CachingOptimized"
 }
 
 resource "aws_cloudfront_function" "redir" {
@@ -171,15 +107,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
   }
-}
-
-output "cloudfront_site" {
-  description = "The newly created cloudfront domain"
-  value       = resource.aws_cloudfront_distribution.s3_distribution.domain_name
-}
-
-data "aws_route53_zone" "primary" {
-  name = var.domain_name
 }
 
 resource "aws_route53_record" "dns1" {
