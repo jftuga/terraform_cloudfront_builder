@@ -50,6 +50,6 @@ ___
 * To use this config, you would run: 
 * * `tf init`
 * * `tf validate`
-* * `tf plan`
+* * `tf plan -var-file="example.tfvars"`
 * * `tf apply -var-file="example.tfvars"`
 * The `apply` command will take about 5 minutes to complete
