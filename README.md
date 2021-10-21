@@ -47,9 +47,11 @@ ___
 
 ## Example Config
 * [example.tfvars](example.tfvars)
+
+## Usage
 * To use this config, you would run: 
-* * `tf init`
-* * `tf validate`
-* * `tf plan -var-file="example.tfvars"`
-* * `tf apply -var-file="example.tfvars"`
+* * `terraform init`
+* * `terraform validate`
+* * `terraform plan -var-file="example.tfvars"`
+* * `terraform apply -var-file="example.tfvars"`
 * The `apply` command will take about 5 minutes to complete
